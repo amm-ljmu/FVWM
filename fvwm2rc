@@ -1,0 +1,574 @@
+############################################################################
+# fvwm2 config for a SGI IRIX 4Dwm-like experience
+# * Hard-coded for a 1280x1024 screen (if different you'll have to change some numbers)
+# * Some parts based on esr:s "big blue steel" config
+# * Some parts ripped from loads of places that I can't remember - sorry!
+#
+# Install:
+# * Install a symbolic link to this file from home dir e.g. ln -s /path/to/config .fvwm2rc
+# * Compile fvwm-2.6.8 and link to the modules - these are needed for the buttons
+# * Set up the paths to the icons (IRIX and BeOS) and wallpapers (Solaris CDE mostly)
+# * Enjoy
+#
+############################################################################
+
+
+############################################################################
+# Pager
+#   FvwmPager can actually be configured to look a bit more like
+#   4dwm's desk overview, but I like the default compact look better.
+############################################################################
+DeskTopSize 2 3
+EdgeScroll 0 0
+*FvwmPagerBack gray65
+*FvwmPagerFore black
+*FvwmPagerFont none
+*FvwmPagerHilight gray75
+*FvwmPagerGeometry +1144+2
+*FvwmPagerLabel FvwmPager
+*FvwmPagerSmallFont "xft:Arial:Regular::size=7"
+*FvwmPager: LabelsAbove
+
+
+############################################################################
+# Visual and behavioural styles for window borders etc
+############################################################################
+
+# Focused windows get the default beige SGI/4dwm colour
+HilightColor	black #A59F80
+
+# The background isn't default 4dwm but makes it easier to distinguish
+# inactive windows from active ones on modern low-budget flatscreens.
+Style "*" Color black/gray40
+
+# Colorset for icons etc
+Colorset 17 fg black, bg #808080
+
+# border width 7 seems to be a good approximation of 4dwm,
+# althought fvwm doesn't do the nice 4dwm dither of the 3d bevels.
+Style "*" BorderWidth 7, HandleWidth 7
+
+# Window Placement
+Style "*" DumbPlacement
+
+# Window decorations
+Style *             Title, Handles, !MWMFunctions, NoDecorHint
+Style "Fvwm*"		NoTitle, Sticky, WindowListSkip, NoHandles, BorderWidth 7
+Style "xload"		NoTitle, Sticky, WindowListSkip, NoHandles, FPLenient, BorderWidth 7
+Style "*lock"		NoTitle, Sticky, WindowListSkip, NoHandles, BorderWidth 7
+
+# Generic menu style
+MenuStyle black grey slategrey
+MenuStyle "*" Font xft:Loma:Italic::size=11
+
+# Window and icon fonts are approximations of the Helvetica
+# variation used by SGI.
+WindowFont            "xft:Loma:Bold:Italic:size=12"
+IconFont              "xft:Arial:Regular::size=9"
+TitleStyle LeftJustified
+
+# SGI-Style "flat" window buttons, close/minimize/maximize
+# These are ripped from somewhere on the net, I wish I remember from where and could give credit.
+ButtonStyle 2 Vector 9 0+5px100-6p@3 100-7px100-6p@3 100-7px-0+4p@3 0+5px0+4p@3 0+5px100-5p@3 0+7px100-5p@2 0+8px100-5p@3 100-6px100-5p@3 100-6px-0+6p@3
+ButtonStyle 4 Vector 9 50-2px50+1p@3 50+2px50+1p@3 50+2px50-3p@3 50-2px50-3p@3 50-2px50+2p@3 50-0px50+2p@2 50-0px50+2p@3 50+3px50+2p@3 50+3px50-1p@3
+ButtonStyle 1 Vector 9 0+4px50+1p@3 100-6px50+1p@3 100-6px50-2p@3 0+4px50-2p@3 0+4px50+2@3 0+5px50+2p@2 0+6px50+2p@2 100-5px50+2p@3 100-5px50@3
+
+
+# IconBox: 4dwm places icons along the top of the screen,
+# but on modern widescreen displays I like them along the
+# left hand side.
+Style "*" IconBox 5 198 90 -0, IconGrid 1 1, IconFill Left Top
+Style * IconSize 90 70 -1 -1
+Style * IconBackgroundColorset 17
+Style * IconBackgroundRelief 2
+Style * IconBackgroundPadding 2
+
+## Set path to icons and pixmaps
+ImagePath $HOME/.fvwm/icons:+
+
+# A few icons ripped from SGI screenshots
+Style "*" Icon generic.png
+Style rxvt Icon terminal.xpm
+Style WinTerm Icon xterm-color.svg
+Style MikMod Icon cdrec.png
+
+# Keep the last focus while in root window
+Style "*" SloppyFocus
+
+# Click/release must occur in <n milliseconds to be a "click"
+ClickTime 250
+
+# Always use solid window moving
+OpaqueMoveSize -1
+
+
+############################################################################
+# Window operations menus
+#   fvwm doesn't handle italic truetype fonts very well so we add a single
+#   whitespace to the end of all visible strings
+############################################################################
+
+# Menu for window operations
+AddToMenu Window-Ops    "Window Ops "    Title
++                       "Move "          Move-or-Raise2
++                       "Resize "        Resize-or-Raise2
++                       "Raise "         Raise
++                       "Lower "         Lower
++                       "(De)Iconify "   Iconify
++                       "(Un)Stick "     Stick
++                       "(Un)Maximize "  Maximize
++                       ""              Nop
++                       "Delete "        Delete
++                       "Close "         Close
++                       "Destroy "       Destroy
++                       ""              Nop
++                       "Refresh Screen " Refresh
+
+# Menu for top left hand ("close") button on windows
+AddToMenu Window-Ops2   "Raise/Lower "   RaiseLower
++                       "Iconify "       Iconify
++                       "(Un)Stick "     Stick
++                       ""              Nop
++                       "Delete "        Delete
++                       "Close "         Close
++                       "Destroy "       Destroy
+
+
+############################################################################
+# Menu and FvwmButtons definitions for use with the ToolChest
+# This is also ripped from some place I can't remember - sorry!
+#   fvwm doesn't handle italic truetype fonts very well so we add a single
+#   whitespace to the end of all visible strings
+############################################################################
+
+
+#### This is the actual Toolchest definition
+Style Toolchest Title, !Handles, BorderWidth 2, WindowShade, !Button 1, !Button 2, !Button 4, !Closable, Sticky, !StickyStippledTitle, WindowListSkip, !Closable
+Style FvwmButtons Title, !Handles, WindowShade, !Button 1, !Button 2, !Button 4, Sticky, !StickyStippledTitle, WindowListSkip, !Closable
+*Toolchest: Columns 1
+*Toolchest: Rows 6
+*Toolchest: BoxSize smart
+*Toolchest: Padding 11 0
+*Toolchest: Frame 1
+*Toolchest: Font "xft:Arial:Regular:Italic:size=12"
+*Toolchest: Colorset 11
+*Toolchest: ActiveColorset 8
+#### Place the Toolchest at x,y, position 5,5
+*Toolchest: ButtonGeometry 120x26+5+5
+*Toolchest: (Right, Title (Side, Left) "System ", Icon toolIcon.xpm, Action (Mouse 1) \
+    	`Menu SysMenu rectangle $widthx$height+$left+$top  +$widthp-5p +1p`)
+*Toolchest: (Right, Icon toolIcon.xpm, Title (Side, Left) "Graphics ", Action (Mouse 1) \
+	`Menu GfxMenu rectangle $widthx$height+$left+$top +$widthp-5p +1p`)
+*Toolchest: (Right, Icon toolIcon.xpm, Title (Side, Left) "Utilities ", Action (Mouse 1) \
+    	`Menu UtilsMenu rectangle $widthx$height+$left+$top  +$widthp-5p +1p`)
+*Toolchest: (Right, Icon toolIcon.xpm, Title (Side, Left) "Internet ", Action (Mouse 1) \
+    	`Menu SurfMenu rectangle $widthx$height+$left+$top  +$widthp-5p +1p`)
+*Toolchest: (Right, Title (Side, Left) "Multimedia ", Icon toolIcon.xpm, Action (Mouse 1) \
+    	`Menu MusicMenu rectangle $widthx$height+$left+$top  +$widthp-5p +1p`)
+*Toolchest: (Right, Title (Side, Left) "Terminal ", Icon toolIcon.xpm, Action (Mouse 1) \
+    	`exec qterminal &`)
+
+#### Sub-menus are defined here.
+#### These are also used in the classic fvwm root menu.
+
+## System tools menu
+AddToMenu SysMenu
++   "Network Manager "        exec nm-connection-editor &
++   "Audio Panel "            exec pulseaudio &
++   "" 			      Nop
++   "Desktop Background "     Popup BgMenu #Dither
++   "" 			      Nop
++   "Restart WM "	      Restart fvwm2
++   "Exit X "		      Popup QuitMenu #Quit
+
+## Confirm quitting X11
+AddToMenu QuitMenu "Really? " Title
++   "No "  Nop
++   "Yes " Quit
+
+## Set desktop background 
+AddToMenu BgMenu "Set Background " Title
++ "Indy "	Exec exec xsetroot -solid DodgerBlue3
++ "Crimson "	Exec exec xsetroot -solid SkyBlue4
++ "O2 "		Exec exec xsetroot -solid SteelBlue4
++ "Indigo "	     Exec exec xsetroot -solid RoyalBlue4
++ "Indigo2 Extreme " Exec exec xsetroot -solid '#388e8e'
++ "Indigo2 Impact " Exec exec xsetroot -solid '#8e388e'
++ "Octane "	Exec exec xsetroot -solid '#4c719e'
++ "Octane Green " Exec exec xsetroot -solid '#71c771'
++ "Onyx "	Exec exec xsetroot -solid DarkSlateBlue
++ "Black "	Exec exec xsetroot -solid black
++ "SGI Light Blue " Exec exec xsetroot -solid '#7c9dbf'
++ "SGI Slate Blue " Exec exec xsetroot -solid '#7171c7'
++ "SGI Teal " Exec exec xsetroot -solid '#388f8f'
++ "SGI Salmon " Exec exec xsetroot -solid '#c77171'
++ "SGI Beet " Exec exec xsetroot -solid '#8f388f'
++ "Dither "  Exec hsetroot -tile ~/.fvwm/wallpapers/sgibak.png
++ "Dither Blue "  Exec hsetroot -tile ~/.fvwm/wallpapers/sgibakBlue.png
++ "Sun WaterDrops Purple1 "  Exec hsetroot -tile ~/.fvwm/wallpapers/cde-waterDropsPurpleTile.png
++ "Sun WaterDrops Purple2 "  Exec hsetroot -tile ~/.fvwm/wallpapers/cdePurpleTile158x163.png
++ "Win2k "   Exec exec xsetroot -solid '#3a6ea5'
++ "Win2k - websafe " Exec exec xsetroot -solid '#3366cc'
++ "SunLogo " Exec hsetroot -tile ~/.fvwm/wallpapers/SunLogo.xpm
+#+ "Ankh " Exec hsetroot -tile ~/.fvwm/wallpapers/Ankh.xpm
++ "Concave " Exec hsetroot -tile ~/.fvwm/wallpapers/Concave.xpm
++ "Convex " Exec hsetroot -tile ~/.fvwm/wallpapers/Convex.xpm
+#+ "Leaves " Exec hsetroot -tile ~/.fvwm/wallpapers/Leaves.xpm
+#+ "OldChars " Exec hsetroot -tile ~/.fvwm/wallpapers/OldChars.xpm
++ "Paver " Exec hsetroot -tile ~/.fvwm/wallpapers/Paver.xpm
+#+ "Pebbles " Exec hsetroot -tile ~/.fvwm/wallpapers/Pebbles.xpm
++ "RicePaper " Exec hsetroot -tile ~/.fvwm/wallpapers/RicePaper.xpm
+#+ "SkyDark " Exec hsetroot -tile ~/.fvwm/wallpapers/SkyDark.xpm
+#+ "SkyLight " Exec hsetroot -tile ~/.fvwm/wallpapers/SkyLight.xpm
+#+ "Toronto " Exec hsetroot -tile ~/.fvwm/wallpapers/Toronto.xpm
++ "WaterDrops " Exec hsetroot -tile ~/.fvwm/wallpapers/WaterDrops.xpm
+#+ "WaterDrops Purple " Exec hsetroot -tile ~/.fvwm/wallpapers/WaterDrops-SolarisDefaultPurple.xpm
+
+## Internet and Surf menu
+AddToMenu SurfMenu
++   "Firefox "		exec firefox &
+
+## Various utilities and applications menu
+AddToMenu UtilsMenu
++   "File Manager "     exec pcmanfm-qt &
++   "FeatherPad "       exec featherpad &
++   "LibreOffice "      exec libreoffice &
++   "PDF Reader "       exec qpdfview &
++   "Meld "             exec meld &
++   "Xterm "            exec xterm -bg black -fg lightblue &
++   "Calculator "       exec xcalc &
++   "Disk Space - Baobab " exec baobab &
++   "Games "     Popup GamesMenu #Gnome-mahjongg
++   "Screensaver "      exec xscreensaver-command -activate &
++   "ScreenGrabber "    exec screengrab &
+
+## Games menu
+AddToMenu GamesMenu "Choose a game " Title
++   "Mahjongg " Exec exec gnome-mahjongg &
+
+## Graphics programs menu
+AddToMenu GfxMenu
++       "Gimp "               exec gimp &
++       "Inkscape "           exec inkscape &
++       "Blender "            exec blender &
++	"Image Magick "       exec qterminal -e display-im6 &
++       "LxImage "            exec lximage-qt &
+
+## Music software menu
+AddToMenu MusicMenu
++       "VLC "                exec vlc & 
++	"Audacious "	      exec audacious &
+
+##### This is the root menu
+AddToMenu RootMenu "Workspace Menu "  Title
++	"Terminal "	exec qterminal
+#Terminal colour option: rxvt -title WinTerm -st -cr palegoldenrod -bg grey5 -fg linen -sb -fn xft:Monospace:size=10 &
++	"" 		Nop
++	"Internet "	Popup SurfMenu
++	"Graphics "	Popup GfxMenu
++	"Music "	Popup MusicMenu
++	"Utils "	Popup UtilsMenu
++	"System "	Popup SysMenu
+
+
+############################################################################
+# MyButtons - see DockButtons Geometry for how to alter its location -> this is from fvwm beginners guide
+############################################################################
+## Style "MyButtons" NoTitle, !Handles, !Borders, Sticky, WindowListSkip, \
+##   CirculateSkip, StaysOnBottom, FixedPosition, FixedSize, !Iconifiable
+## 
+## DestroyModuleConfig MyButtons: *
+## *MyButtons: Colorset 9
+## *MyButtons: Rows 1
+## *MyButtons: Columns 22
+## *MyButtons: Frame 0
+## *MyButtons: Font "Shadow=3:xft:Sans:Bold:pixelsize=14:minspace=True:antialias=True"
+## *MyButtons: (1x1, Frame 0)
+## *MyButtons: (5x1, Frame 0, Icon textedit.png, \
+##   Action(Mouse 1) Exec exec featherpad)
+## *MyButtons: (5x1, Frame 0, Icon Terminal.xpm, \
+##   Action(Mouse 1) Exec exec qterminal)
+## *MyButtons: (5x1, Frame 0, Icon WordProcessing.xpm, \
+##   Action(Mosue 1) Exec exec openoffice)
+## *MyButtons: (5x1, Frame 0, Icon WWW.xpm, \
+##   Action(Mouse 1) Exec exec firefox)
+## *MyButtons: (1x1, Frame 0)
+
+
+############################################################################
+# DockButtons -> this is from fvwm beginners guide (adv)
+#
+# Use "dock_shape_slim" for IRIX icons and "dock_shape_slimmer" for BeOS icons
+############################################################################
+Style "DockButtons" !Title, !Handles, Sticky, WindowListSkip, \
+        CirculateSkip, BorderWidth 0, HandleWidth 0
+Colorset 15 RootTransparent, fg rgb:00/00/00, bg average, \
+  Tint white 40, bgTint white 40, RootTransparent, \
+  Shape icons/dock_shape_slim.xpm
+Colorset 16 RootTransparent, fg rgb:00/00/00, bg average, \
+  Tint white 40, bgTint white 40, RootTransparent
+ 
+DestroyModuleConfig DockButtons: *
+# The size is 600x60 with x,y offsets from the top left hand corner
+*DockButtons: Geometry 600x60+340+959
+*DockButtons: Colorset 15
+*DockButtons: Rows 1
+*DockButtons: Columns 33
+#*DockButtons: (1x1, Frame 0)
+*DockButtons: (3x1, Frame 0, Icon icons/irix-icons/IndigoMagic/apps/display.png, \
+  Action(Mouse 1) Exec exec qterminal)
+*DockButtons: (3x1, Frame 0, Icon icons/irix-icons/netscape.png, \
+  Action(Mouse 1) Exec exec firefox)
+*DockButtons: (3x1, Frame 0, Icon icons/irix-icons/IndigoMagic/misc/pages.png, \
+  Action(Mouse 1) Exec exec pcmanfm-qt)
+*DockButtons: (3x1, Frame 0, Icon icons/irix-icons/crayon.png, \
+  Action(Mouse 1) Exec exec featherpad)
+*DockButtons: (3x1, Frame 0, Icon icons/irix-icons/see-piracy-makes-a-copy.png, \
+  Action(Mouse 1) Exec exec libreoffice)
+*DockButtons: (3x1, Frame 0, Icon icons/irix-icons/IndigoMagic/MIME/mime-application:pdf.png, \
+  Action(Mouse 1) Exec exec qpdfview)
+*DockButtons: (3x1, Frame 0, Icon icons/irix-icons/toshop.png, \
+  Action(Mouse 1) Exec exec gimp)
+*DockButtons: (3x1, Frame 0, Icon icons/irix-icons/3d.png, \
+  Action(Mouse 1) Exec exec blender)
+*DockButtons: (3x1, Frame 0, Icon icons/irix-icons/Illustrator.png, \
+  Action(Mouse 1) Exec exec inkscape)
+*DockButtons: (3x1, Frame 0, Icon icons/irix-icons/IndigoMagic/MIME/mime-image:x-xpixmap.png, \
+  Action(Mouse 1) Exec exec baobab)
+*DockButtons: (3x1, Frame 0, Icon icons/irix-icons/dumpstah.png, \
+  Action(Mouse 1) Exec exec pcmanfm-qt trash:///)
+#*DockButtons: (1x1, Frame 0)
+
+
+############################################################################
+# BeosDockButtons -> this is from fvwm beginners guide (adv)
+#
+# Use "dock_shape_slim" for 48x48 IRIX icons and "dock_shape_slimmer" for 32x32 BeOS icons
+############################################################################
+Style "BeosDockButtons" !Title, !Handles, Sticky, WindowListSkip, \
+        CirculateSkip, BorderWidth 0, HandleWidth 0
+Colorset 15 RootTransparent, fg rgb:00/00/00, bg average, \
+  Tint white 40, bgTint white 40, RootTransparent, \
+  Shape icons/dock_shape_slimmer.xpm
+Colorset 16 RootTransparent, fg rgb:00/00/00, bg average, \
+  Tint white 40, bgTint white 40, RootTransparent
+ 
+DestroyModuleConfig BeosDockButtons: *
+# The size is 600x60 with x,y offsets from the top left hand corner
+*BeosDockButtons: Geometry 600x47+340+970
+*BeosDockButtons: Colorset 15
+*BeosDockButtons: Rows 1
+*BeosDockButtons: Columns 26
+#*BeosDockButtons: (1x1, Frame 0)
+*BeosDockButtons: (2x1, Frame 0, Icon icons/beos-icons/32x32/apps/go.png, \
+  Action(Mouse 1) Exec exec qterminal)
+*BeosDockButtons: (2x1, Frame 0, Icon icons/beos-icons/32x32/apps/firefox-trunk.png, \
+  Action(Mouse 1) Exec exec firefox)
+*BeosDockButtons: (2x1, Frame 0, Icon icons/beos-icons/32x32/apps/file-manager.png, \
+  Action(Mouse 1) Exec exec pcmanfm-qt)
+*BeosDockButtons: (2x1, Frame 0, Icon icons/beos-icons/32x32/apps/accessories-text-editor.png, \
+  Action(Mouse 1) Exec exec libreoffice)
+*BeosDockButtons: (2x1, Frame 0, Icon icons/beos-icons/32x32/apps/APlayer.png, \
+  Action(Mouse 1) Exec exec featherpad)
+*BeosDockButtons: (2x1, Frame 0, Icon icons/beos-icons/32x32/apps/acroread.png, \
+  Action(Mouse 1) Exec exec qpdfview)
+*BeosDockButtons: (2x1, Frame 0, Icon icons/beos-icons/32x32/apps/gravit-designer.png, \
+  Action(Mouse 1) Exec exec gimp)
+*BeosDockButtons: (2x1, Frame 0, Icon icons/beos-icons/32x32/devices/Rubik-Mixed-icon.png, \
+  Action(Mouse 1) Exec exec blender)
+*BeosDockButtons: (2x1, Frame 0, Icon icons/beos-icons/32x32/devices/etch-a-sketch-icon.png, \
+  Action(Mouse 1) Exec exec inkscape)
+*BeosDockButtons: (2x1, Frame 0, Icon icons/beos-icons/32x32/devices/BeBox-DR-7-icon.png, \
+  Action(Mouse 1) Exec exec VirtualBox)
+*BeosDockButtons: (2x1, Frame 0, Icon icons/beos-icons/32x32/apps/orage.png, \
+  Action(Mouse 1) Exec exec ./Documents/programming/gtk/countDownTimer)
+*BeosDockButtons: (2x1, Frame 0, Icon icons/beos-icons/32x32/devices/Imation-Disk-8-icon.png, \
+  Action(Mouse 1) Exec exec baobab)
+*BeosDockButtons: (2x1, Frame 0, Icon icons/beos-icons/32x32/filesystems/trashcan_empty.png, \
+  Action(Mouse 1) Exec exec pcmanfm-qt trash:///)
+#*BeosDockButtons: (1x1, Frame 0)
+
+
+############################################################################
+# OsxDockButtons -> this is from fvwm beginners guide (adv)
+#
+# Use "dock_shape_slimmer" for 32x32 OSX icons - not .svg to be scaled down to 32x32
+############################################################################
+Style "OsxDockButtons" !Title, !Handles, Sticky, WindowListSkip, \
+        CirculateSkip, BorderWidth 0, HandleWidth 0
+Colorset 15 RootTransparent, fg rgb:00/00/00, bg average, \
+  Tint white 40, bgTint white 40, RootTransparent, \
+  Shape icons/dock_shape_slimmer.xpm
+Colorset 16 RootTransparent, fg rgb:00/00/00, bg average, \
+  Tint white 40, bgTint white 40, RootTransparent
+ 
+DestroyModuleConfig OsxDockButtons: *
+# The size is 600x60 with x,y offsets from the top left hand corner
+*OsxDockButtons: Geometry 600x47+340+970
+*OsxDockButtons: Colorset 16
+*OsxDockButtons: Rows 1
+*OsxDockButtons: Columns 26
+#*OsxDockButtons: (1x1, Frame 0)
+*OsxDockButtons: (2x1, Frame 0, Icon icons/osx-icons/terminal.png, \
+  Action(Mouse 1) Exec exec qterminal)
+*OsxDockButtons: (2x1, Frame 0, Icon icons/osx-icons/firefox-trunk.png, \
+  Action(Mouse 1) Exec exec firefox)
+*OsxDockButtons: (2x1, Frame 0, Icon icons/osx-icons/caja.png, \
+  Action(Mouse 1) Exec exec pcmanfm-qt)
+*OsxDockButtons: (2x1, Frame 0, Icon icons/osx-icons/waterfox.png, \
+  Action(Mouse 1) Exec exec libreoffice)
+*OsxDockButtons: (2x1, Frame 0, Icon icons/osx-icons/latexila.png, \
+  Action(Mouse 1) Exec exec featherpad)
+*OsxDockButtons: (2x1, Frame 0, Icon icons/osx-icons/acroread.png, \
+  Action(Mouse 1) Exec exec qpdfview)
+*OsxDockButtons: (2x1, Frame 0, Icon icons/osx-icons/irix.png, \
+  Action(Mouse 1) Exec exec gimp)
+*OsxDockButtons: (2x1, Frame 0, Icon icons/osx-icons/Blender.png, \
+  Action(Mouse 1) Exec exec blender)
+*OsxDockButtons: (2x1, Frame 0, Icon icons/osx-icons/inkscape.png, \
+  Action(Mouse 1) Exec exec inkscape)
+*OsxDockButtons: (2x1, Frame 0, Icon icons/osx-icons/yast-rocket.png, \
+  Action(Mouse 1) Exec exec VirtualBox)
+*OsxDockButtons: (2x1, Frame 0, Icon icons/osx-icons/clock.png, \
+  Action(Mouse 1) Exec exec ./Documents/programming/gtk/countDownTimer)
+*OsxDockButtons: (2x1, Frame 0, Icon icons/osx-icons/indicator.png, \
+  Action(Mouse 1) Exec exec baobab)
+*OsxDockButtons: (2x1, Frame 0, Icon icons/osx-icons/trash-full.png, \
+  Action(Mouse 1) Exec exec pcmanfm-qt trash:///)
+#*OsxDockButtons: (1x1, Frame 0)
+
+
+#############################################################################
+# Startup Functions
+#############################################################################
+
+# Gotta have a pager!
+AddToFunc "InitFunction"  I Module 	FvwmPager
+
+# Gotta have a Toolchest!
+AddToFunc "InitFunction" I Module FvwmButtons Toolchest
+
+# FvwmDock - using just the FVWM buttons
+## AddToFunc "InitFunction" I Module FvwmButtons MyButtons
+
+# FvwmDock - Pretty round dock using the IRIX icons
+##AddToFunc "InitFunction" I Module FvwmButtons DockButtons
+
+# FvwmDock - Pretty slim round dock using the BeOS icons
+AddToFunc "InitFunction" I Module FvwmButtons BeosDockButtons
+
+# FvwmDock - Pretty slim round dock using the OSX icons
+##AddToFunc "InitFunction" I Module FvwmButtons OsxDockButtons
+
+# A clock is nice to have as well
+AddToFunc "InitFunction" I Exec xclock -norender -geometry 121x121+1144+117 -bg gray &
+
+# Start the coffee countdown timer 
+AddToFunc "InitFunction" I Exec ./Documents/programming/gtk/countDownTimer &
+
+# Set the background
+AddToFunc "InitFunction" I Exec xsetroot -solid '#7c9dbf' &
+#AddToFunc "InitFunction" I Exec hsetroot -tile ~/.fvwm/wallpapers/SunLogo.xpm
+
+# Touchpad-indicator can disable the touchpad when a mouse is plugged in
+AddToFunc "InitFunction" I Exec touchpad-indicator &
+
+# Restart Toolchest and Pager on WM restart
+AddToFunc "RestartFunction" I Module 	FvwmPager
++ I Module FvwmButtons Toolchest 
+##+ I Module FvwmButtons DockButtons
++ I Module FvwmButtons BeosDockButtons
+##+ I Module FvwmButtons OsxDockButtons
++ I Exec ./Documents/programming/gtk/countDownTimer
+
+
+############################################################################
+# Window handling functions
+############################################################################
+
+# This will automatically re-tile the icons in the icon box when
+# a window is de-iconified
+AddToFunc TileIcons
+ + D Iconify off
+ + D All (CurrentPage, Iconic) PlaceAgain Icon
+
+AddToFunc Move-or-Raise		"I" Raise
++				"M" Move
++				"D" Lower
+
+AddToFunc Move-or-Raise2        "M" Raise
++				"M" Move
++				"D" Lower
+
+AddToFunc Resize-or-Raise       "I" Raise
++                               "M" Resize
++                               "D" Lower
+
+AddToFunc Resize-or-Raise2      "M" Raise
++                               "M" Resize
++                               "D" Lower
+
+AddToFunc PrintFunction         "I" Raise
++                               "I" Exec xdpr -id $w
+
+AddToFunc Iconify-and-Raise     "I" Iconify
++                               "I" Raise
+
+AddToFunc Maximize-or-Move
+ + D Maximize
+ + I Raise
+ + C Focus
+ + M Move
+
+############################################################################
+# Mouse bindings
+############################################################################
+
+## The below line will disable the root menu completely
+Mouse 1		R   	A       Nop
+
+## Remove the line above and uncomment the line below to get the root menu back.
+#Mouse 1		R   	A       Menu RootMenu Nop
+
+Mouse 3		R    	A       Menu Window-Ops Nop
+Mouse 2		R    	A      	WindowList
+
+# Left button is the Window-Ops2 menu, right is iconify, rightmost is maximize
+#     Button	Context Modifi 	Function
+Mouse 0		1       A       Menu Window-Ops2 Close
+Mouse 0		2    	A     	Maximize
+Mouse 0		4    	A     	Iconify
+
+# Button 1 in Frame or Sides is a resize-or-raise, in Icons is a tiling deiconify
+# and on Top does a move-or-raise
+#     Button	Context Modifi 	Function
+Mouse 1 	FS      A       Resize-or-Raise
+Mouse 1		I       A       TileIcons
+Mouse 1		T       A       Maximize-or-Move
+
+# Button 2 in an Icon is de-iconify, in Corners/Sides/Titlebar gets Ops Menu
+#     Button	Context Modifi 	Function
+Mouse 2 	I       A       Iconify
+Mouse 2 	FST     A       Menu Window-Ops2 Nop
+
+# Button 3 does a raise-lower on anything
+Mouse 3 	TSIF    A       RaiseLower
+
+############################################################################
+# Keyboard bindings
+############################################################################
+
+## Paging: Windows key + arrows moves to the next desktop
+## in the desired direction
+Key Left	A	4	Scroll -100 0
+Key Right	A	4	Scroll +100  +0
+Key Up		A	4	Scroll +0 -100
+Key Down	A	4	Scroll +0 +100
+
+## Fast Alt-Tab
+Key Tab A M WindowList Root c c CurrentDesk, NoGeometry, CurrentAtEnd, IconifiedAtEnd
+
+
+############################################################################
+# That's all folks
+############################################################################
