@@ -1,5 +1,6 @@
 d############################################################################
-# fvwm2 config for a SGI IRIX 4Dwm-like experience
+# fvwm2 config for a SGI IRIX 4Dwm-like experience => This was installed and working
+#                                                     on Lubuntu 19.10 (AMD64)
 # * Hard-coded for a 1280x1024 screen (if different you'll have to change some numbers)
 # * Some parts based on esr:s "big blue steel" config
 # * Some parts ripped from loads of places that I can't remember - sorry!
